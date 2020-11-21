@@ -2,6 +2,25 @@ var data = []
 var token = ""
 
 jQuery(document).ready(function () {
+    var fileInput = document.getElementById('fileInput');
+    var fileDisplayArea = document.getElementById('fileDisplayArea');
+    fileInput.addEventListener('change', function(e) {
+        var file = fileInput.files[0];
+        var textType = /text.*/;
+    
+        if (file.type.match(textType)) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                var content = reader.result;
+                var text = document.getElementById('txt_input');
+                text.innerHTML += content;
+            }
+        reader.readAsText(file);	
+    } else {
+        fileDisplayArea.innerText = "File not supported!"
+    }
+});
     var slider = $('#max_words')
     slider.on('change mousemove', function (evt) {
         $('#label_max_words').text('# words in summary: ' + slider.val())
