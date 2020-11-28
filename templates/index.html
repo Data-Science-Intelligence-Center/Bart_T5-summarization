@@ -61,9 +61,16 @@
                     </div>
                 </div>
 
-                <h4> Summary </h4>
+                <h4> Summary </h4><br />
                 <textarea class="form-control txt_summary" id="input_summary" readonly> </textarea>
+                <input value='Download As Text File' type='button' onclick='doDL(document.getElementById("input_summary").value)'/>
 
+                <script type='text/javascript'>
+                function doDL(s){
+                    function dataUrl(data) {return "data:x-application/text," + escape(data);}
+                    window.open(dataUrl(s));
+                }
+                </script>
 
             </div>
             <div class="col-sm-1"></div>
