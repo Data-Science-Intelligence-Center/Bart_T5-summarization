@@ -7,7 +7,7 @@ from transformers import BartTokenizer, BartForConditionalGeneration, BartConfig
 from transformers import T5Tokenizer, T5ForConditionalGeneration, T5Config
 import sys
 
-BART_PATH = 'sshleifer/bart-tiny-random'
+BART_PATH = 'sshleifer/distilbart-cnn-12-6'
 T5_PATH = 't5-base'
 # BART_PATH = 'model/bart'
 # T5_PATH = 'model/t5'
