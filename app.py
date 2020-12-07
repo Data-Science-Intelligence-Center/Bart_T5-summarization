@@ -63,16 +63,15 @@ def index():
 def predict():
     try:
         sentence = request.json['input_text']
-        #num_words = request.json['num_words']
         num_beams = request.json['num_beams']
         min_words = request.json['min_words']
         model = request.json['model']
 
         if sentence != '':
             if model.lower() == 'bart':
-                output = bart_summarize(sentence, num_beams, num_words, min_words)
+                output = bart_summarize(sentence, num_beams, num_words)
             else:
-                output = t5_summarize(sentence, num_beams, num_words, min_words)
+                output = t5_summarize(sentence, num_beams, num_words)
             response = {}
             response['response'] = {
                 'summary': str(output),
