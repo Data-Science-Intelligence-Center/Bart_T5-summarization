@@ -23,7 +23,12 @@ jQuery(document).ready(function () {
 });
     var slider = $('#max_words')
     slider.on('change mousemove', function (evt) {
-        $('#label_max_words').text('# words in summary: ' + slider.val())
+        $('#label_max_words').text('max # words in summary: ' + slider.val())
+    })
+
+    var slider1 = $('#min_words')
+    slider.on('change mousemove', function (evt) {
+        $('#label_min_words').text('min # words in summary: ' + slider1.val())
     })
 
     var slider2 = $('#num_beams')
@@ -35,6 +40,7 @@ jQuery(document).ready(function () {
         input_text = $('#txt_input').val()
         model = $('#input_model').val()
         num_words = $('#max_words').val()
+        min_words = $('#min_words').val()
         num_beams = $('#num_beams').val()
         $.ajax({
             url: '/predict',
@@ -45,7 +51,8 @@ jQuery(document).ready(function () {
                 "input_text": input_text,
                 "model": model,
                 "num_words": num_words,
-                "num_beams": num_beams
+                "num_beams": num_beams,
+                "min_words": min_words
             }),
             beforeSend: function () {
                 $('.overlay').show()

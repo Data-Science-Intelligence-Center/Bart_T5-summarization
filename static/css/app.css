@@ -46,6 +46,6 @@ h4 {
 	height: 150px !important;
 }
 
-#max_words, #num_beams {
+#max_words, #num_beams, #min_words {
 	margin-top: 7px !important;
 }

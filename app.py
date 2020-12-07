@@ -22,7 +22,7 @@ t5_tokenizer = T5Tokenizer.from_pretrained(T5_PATH)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
-def bart_summarize(input_text, num_beams=4, num_words=50):
+def bart_summarize(input_text, num_beams, num_words, min_words):
     input_text = str(input_text)
     input_text = ' '.join(input_text.split())
     input_tokenized = bart_tokenizer.encode(input_text, return_tensors='pt').to(device)
@@ -30,14 +30,14 @@ def bart_summarize(input_text, num_beams=4, num_words=50):
                                       num_beams=int(num_beams),
                                       no_repeat_ngram_size=3,
                                       length_penalty=2.0,
-                                      min_length=30,
+                                      min_length=int(min_words),
                                       max_length=int(num_words),
                                       early_stopping=True)
     output = [bart_tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summary_ids]
     return output[0]
 
 
-def t5_summarize(input_text, num_beams=4, num_words=50):
+def t5_summarize(input_text, num_beams, num_words, min_words):
     input_text = str(input_text).replace('\n', '')
     input_text = ' '.join(input_text.split())
     input_tokenized = t5_tokenizer.encode(input_text, return_tensors="pt").to(device)
@@ -47,7 +47,7 @@ def t5_summarize(input_text, num_beams=4, num_words=50):
                                     num_beams=int(num_beams),
                                     no_repeat_ngram_size=3,
                                     length_penalty=2.0,
-                                    min_length=30,
+                                    min_length=int(min_words),
                                     max_length=int(num_words),
                                     early_stopping=True)
     output = [t5_tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in summary_ids]
@@ -65,12 +65,14 @@ def predict():
         sentence = request.json['input_text']
         num_words = request.json['num_words']
         num_beams = request.json['num_beams']
+        min_words = request.json['min_words']
         model = request.json['model']
+
         if sentence != '':
             if model.lower() == 'bart':
-                output = bart_summarize(sentence, num_beams, num_words)
+                output = bart_summarize(sentence, num_beams, num_words, min_words)
             else:
-                output = t5_summarize(sentence, num_beams, num_words)
+                output = t5_summarize(sentence, num_beams, num_words, min_words)
             response = {}
             response['response'] = {
                 'summary': str(output),
